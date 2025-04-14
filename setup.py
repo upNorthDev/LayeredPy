@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="layered-py",
-    version="1.0.3",
+    version="2.0.0",
     description="A Python library for implementing layered architecture with services and dependency injection.",
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
@@ -15,7 +15,7 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            "service=cli.service:main"
+            "layeredpy=cli.layeredpy:main"
         ],
     },
     classifiers=[
