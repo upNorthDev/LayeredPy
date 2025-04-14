@@ -33,8 +33,9 @@ Here’s how you can use **LayeredPy** in your projects.
 Create a service by subclassing the `Service` class and use the `@register_service` decorator to register it.
 
 ```python
-from service_layer.service import Service
-from service_layer.decorators import register_service
+from layered_py.service import Service
+from layered_py.decorators import register_service
+
 
 @register_service("GreetingService")
 class GreetingService(Service):
@@ -48,12 +49,14 @@ class GreetingService(Service):
 With the `@inject` decorator, services can be directly injected as attributes of the class. You don’t need to pass them explicitly.
 
 ```python
-from service_layer.decorators import inject
+from layered_py.decorators import inject
+
 
 class MyApp:
     @inject("GreetingService")
     def run(self):
         self.GreetingService.say_hello()  # Directly access the injected service
+
 
 # Example usage
 if __name__ == "__main__":
@@ -78,7 +81,8 @@ service create MyNewService
 This command generates the following `services/MyNewService.py` file:
 
 ```python
-from service_layer.service import Service
+from layered_py.service import Service
+
 
 class MyNewService(Service):
     def setup(self):

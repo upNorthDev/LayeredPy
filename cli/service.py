@@ -3,7 +3,7 @@ import sys
 
 def create(service_name):
     service_template = f"""
-from service_layer.service import Service
+from layered_py.service import Service
 
 class {service_name}(Service):
     def setup(self):
