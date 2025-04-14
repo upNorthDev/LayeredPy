@@ -30,14 +30,14 @@ Here’s how you can use **LayeredPy** in your projects.
 ---
 
 ### 1. Define and Register a Service
-Create a service by subclassing the `Service` class and use the `@register_service` decorator to register it.
+Create a service by subclassing the `Service` class and use the `@register` decorator to register it.
 
 ```python
 from layered_py.service import Service
 from layered_py.decorators import register_service
 
 
-@register_service("GreetingService")
+@register("GreetingService")
 class GreetingService(Service):
     def say_hello(self):
         print("Hello from LayeredPy!")
@@ -70,27 +70,39 @@ if __name__ == "__main__":
 ---
 
 ### 3. Generate Service Templates with the CLI
-You can use the built-in `service` CLI tool to create new service boilerplates automatically.
+You can use the built-in `layeredpy` CLI tool to create new service boilerplates automatically.
+
+The CLI tool of LayeredPy can create services, repositories, domains and presentation classes
 
 #### Example Usage:
 
 ```bash
-service create MyNewService
+layeredpy create MyNewService
 ```
 
 This command generates the following `services/MyNewService.py` file:
 
 ```python
-from layered_py.service import Service
+from layered_py.service import BaseService
 
-
-class MyNewService(Service):
+@register('MyNewService')
+class MyNewService(BaseService):
     def setup(self):
         pass
 
     def handle(self):
         raise NotImplementedError
 ```
+
+## Create complete class sets with 'layeredpy generate'
+
+LayeredPy is capable of creating complete sets of classes for example this command:
+
+```bash
+layeredpy generate User
+```
+
+will create a **UserService, UserRepository, User and UserRoutes** with the register annotation so they are DI-ready.
 
 ## License
 
