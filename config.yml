@@ -1,0 +1,4 @@
+service_destination: "custom_services"
+domain_destination: "custom_domains"
+repository_destination: "custom_repositories"
+presentation_destination: "custom_presentations"

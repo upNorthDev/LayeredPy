@@ -34,10 +34,10 @@ Create a service by subclassing the `Service` class and use the `@register` deco
 
 ```python
 from layered_py.service import Service
-from layered_py.decorators import register_service
+from layered_py.decorators import register
 
 
-@register("GreetingService")
+@register(singleton=True)
 class GreetingService(Service):
     def say_hello(self):
         print("Hello from LayeredPy!")
@@ -48,18 +48,23 @@ class GreetingService(Service):
 ### 2. Inject the Service Where Needed
 With the `@inject` decorator, services can be directly injected as attributes of the class. You don’t need to pass them explicitly.
 
+LayeredPy uses lazy loading with the ```load_all_modules``` function to collect all classes with the register annotation. Using this function in a
+central point in your software is mandatory so classes that use Inject function properly.
 ```python
 from layered_py.decorators import inject
+from layered_py.bootstrap import load_all_modules
 
 
 class MyApp:
-    @inject("GreetingService")
-    def run(self):
-        self.GreetingService.say_hello()  # Directly access the injected service
+    @inject
+    def run(self, GreetingService):
+        GreetingService.say_hello()  # Directly access the injected service
 
 
 # Example usage
 if __name__ == "__main__":
+    load_all_modules()
+    
     app = MyApp()
     app.run()
 ```
@@ -83,10 +88,11 @@ layeredpy create MyNewService
 This command generates the following `services/MyNewService.py` file:
 
 ```python
-from layered_py.service import BaseService
+from layered_py.service import Service
+from layered_py.decorators import register
 
-@register('MyNewService')
-class MyNewService(BaseService):
+@register(singleton=True)
+class MyNewService(Service):
     def setup(self):
         pass
 
@@ -94,7 +100,7 @@ class MyNewService(BaseService):
         raise NotImplementedError
 ```
 
-## Create complete class sets with 'layeredpy generate'
+## Create complete class sets with ```layeredpy generate```
 
 LayeredPy is capable of creating complete sets of classes for example this command:
 
@@ -102,7 +108,19 @@ LayeredPy is capable of creating complete sets of classes for example this comma
 layeredpy generate User
 ```
 
-will create a **UserService, UserRepository, User and UserRoutes** with the register annotation so they are DI-ready.
+will create: **UserService, UserRepository, UserModel and UserRoutes** with the register annotation so they are DI-ready.
+
+## Configuration
+
+To change the paths where the classes will be generated create a ```layeredpy_config.yml``` in your project root
+The .yml File should contain the following:
+
+```yaml
+service_destination: "your_services"
+domain_destination: "your_domains"
+repository_destination: "your_repositories"
+presentation_destination: "your_presentations"
+```
 
 ## License
 

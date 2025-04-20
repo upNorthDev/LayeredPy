@@ -4,7 +4,7 @@ def get_service_template(service_name):
     service_template = f"""from layered_py.service import Service
 from layered_py.decorators import register
 
-@register('{pascal_name}')
+@register(singleton=True)
 class {pascal_name}(Service):
     def setup(self):
         super().__init__()
@@ -20,7 +20,7 @@ def get_domain_template(domain_name):
     domain_template = f"""from layered_py.domain import BaseDomain
 from layered_py.decorators import register
     
-@register('{pascal_name}')
+@register(singleton=True)
 class {pascal_name}(BaseDomain):
     def __init__(self):
         super().__init__()
@@ -33,7 +33,7 @@ def get_repository_template(repository_name):
     repository_template = f"""from layered_py.repository import BaseRepository
 from layered_py.decorators import register
 
-@register('{pascal_name}')
+@register(singleton=True)
 class {pascal_name}(BaseRepository):
     def __init__(self):
         super().__init__()
@@ -46,7 +46,7 @@ def get_presentation_template(presentation_name):
     presentation_template = f"""from layered_py.presentation import BasePresentation
 from layered_py.decorators import register
 
-@register('{pascal_name}')
+@register(singleton=True)
 class {pascal_name}(BasePresentation):
     def __init__(self):
         super().__init__()

@@ -1,21 +1,35 @@
+import inspect
+from functools import wraps
+from inspect import isclass
 from .di import Container
 
 container = Container()
 
-def register(name):
-    def decorator(class_name):
-        container.register(name, class_name)
-        return class_name
+def register(key=None, singleton=False):
+    def wrapper(provider):
+        reg_key = key or provider.__name__
+        if isclass(provider):
+            container.register(reg_key, lambda: provider(), singleton=singleton)
+        else:
+            container.register(reg_key, provider, singleton=singleton)
+        return provider
+    return wrapper
 
-    return decorator
+def inject(func):
+    sig = inspect.signature(func)
 
-def inject(name):
-    def decorator(func):
-        def wrapper(self, *args, **kwargs):
-            class_name = container.get(name)
-            setattr(self, name, class_name)  # Attach the class_name to the class instance
-            return func(self, *args, **kwargs)
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        bound = sig.bind_partial(*args, **kwargs)
 
-        return wrapper
-
-    return decorator
+        for name, param in sig.parameters.items():
+            if name not in bound.arguments:
+                if param.annotation != inspect.Parameter.empty:
+                    try:
+                        kwargs[name] = container.resolve(param.annotation.__name__)
+                    except KeyError:
+                        pass
+                if name not in kwargs:
+                    kwargs[name] = container.resolve(name)
+        return func(*args, **kwargs)
+    return wrapper

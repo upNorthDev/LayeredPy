@@ -1,14 +1,23 @@
 class Container:
     def __init__(self):
-        self.services = {}
+        self._providers = {}
+        self._singletons = {}
 
-    def register(self, name, service):
-        self.services[name] = service
+    def register(self, key, provider, *, singleton=False):
+        self._providers[key] = {
+            "provider": provider,
+            "singleton": singleton
+        }
 
-    def get(self, name):
-        service = self.services.get(name)
+    def resolve(self, key):
+        if key not in self._providers:
+            raise KeyError(f"No provider registered for key: '{key}'")
 
-        if service:
-            return service
+        entry = self._providers[key]
 
-        raise ValueError(f"Service {name} not found")
+        if entry["singleton"]:
+            if key not in self._singletons:
+                self._singletons[key] = entry["provider"]()
+                return self._singletons[key]
+            else:
+                return entry["provider"]()
