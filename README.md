@@ -9,7 +9,7 @@
 - **Layered Architecture**: Enables a structured and modular separation of concerns.
 - **Dependency Injection**: Dependencies get injected automatically, improving testability and reducing tight coupling.
 - **Service Management**: Defines base services with extensible behavior for your application logic.
-- **CLI Tool**: Generate service boilerplate with the `service` tool.
+- **CLI Tool**: Generate service boilerplate with the `layeredpy` tool.
 
 ---
 
@@ -82,7 +82,7 @@ The CLI tool of LayeredPy can create services, repositories, domains and present
 #### Example Usage:
 
 ```bash
-layeredpy create MyNewService
+layeredpy createService MyNewService
 ```
 
 This command generates the following `services/MyNewService.py` file:
@@ -99,6 +99,8 @@ class MyNewService(Service):
     def handle(self):
         raise NotImplementedError
 ```
+
+The same works with the commands: ```createDomain, createPresentation, and createRepository```
 
 ## Create complete class sets with ```layeredpy generate```
 

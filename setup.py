@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="layered-py",
-    version="3.0.0",
+    version="3.0.1",
     description="A Python library for implementing layered architecture with services and dependency injection.",
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
